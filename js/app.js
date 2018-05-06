@@ -1,5 +1,5 @@
 !function () {
-
+  //variable declaration
   const cardList = ["fa-diamond", "fa-paper-plane-o", "fa-anchor", "fa-bolt", "fa-cube", "fa-leaf", "fa-bicycle", "fa-bomb"];
   let started = false;
   let openCards = [];
@@ -7,7 +7,7 @@
   let timeCount = 0;
   let solvedCount = 0;
   let timerPtr;
-
+  //shuffle cards function
   function shuffle(array) {
       let currentIndex = array.length, temporaryValue, randomIndex;
       while (currentIndex !== 0) {
@@ -19,11 +19,11 @@
       }
       return array;
   }
-
+  //acquiring the card class
   function getClassFromCard(card){
       return card[0].firstChild.className;
   }
-
+  //function for checking open cards for matches
   function checkOpenCards(){
       if (getClassFromCard(openCards[0]) === getClassFromCard(openCards[1])){
           solvedCount++;
@@ -45,13 +45,13 @@
           endGame();
       }
   }
-
+  //starts timer
   function startTimer(){
       timeCount += 1;
       $("#timer").html(timeCount);
       timerPtr = setTimeout(startTimer, 1000);
   }
-
+  //increments game move count
   function incrementMove(){
       moves += 1;
       $("#moves").html(moves);
@@ -59,7 +59,7 @@
           reduceStar();
       }
   }
-
+  //click handler for cards
   function cardClick(event){
       // check opened or matched card
       let classes = $(this).attr("class");
@@ -83,15 +83,15 @@
           checkOpenCards();
       }
   }
-
+  //creates cards for appending to dom
   function createCard(cardClass){
       $("ul.deck").append(`<li class="card"><i class="fa ${cardClass}"></i></li>`);
   }
-
+  //runs shuffle method in prep for appending cards to dom
   function populateCards(){
       shuffle(cardList.concat(cardList)).forEach(createCard);
   }
-
+  //resets game upon completion or reset button click
   function resetGame(){
       $("ul.deck").html("");
       $(".stars").html("");
@@ -106,7 +106,7 @@
       // re-setup game
       initGame();
   }
-
+  //ends game upon win
   function endGame(){
       // stop timer
       clearTimeout(timerPtr);
@@ -121,24 +121,24 @@
           }
       });
   }
-
+  //initializes star rating system
   function initStars(){
       for (let i=0; i<3; i++){
           $(".stars").append(`<li><i class="fa fa-star"></i></li>`);
       }
   }
-
+  //decrements star rating if too many moves used
   function reduceStar(){
       let stars = $(".fa-star");
       $(stars[stars.length-1]).toggleClass("fa-star fa-star-o");
   }
-
+  //starts the game upon page load
   function initGame(){
       populateCards();
       initStars();
       $(".card").click(cardClick);
   }
-
+  //game prep upon page load
   $(document).ready(function(){
       initGame();
       $("#restart").click(resetGame);
@@ -146,7 +146,7 @@
       vex.dialog.buttons.YES.text = 'Yes!';
       vex.dialog.buttons.NO.text = 'No';
   });
-
+  //animation functionality across browsers
   $.fn.extend({
       animateCss: function (animationName, callback) {
           var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
